@@ -11,7 +11,7 @@ docker run --env HEADER=${HEADER} --env TEXT=${TEXT} --env IMAGE=${IMAGE} -p 808
 ```
 
 ## Available Background Images
-| Author           | Value for env var  |
+| Photographer     | Value for env var  |
 |------------------|--------------------|
 | Ales Krivec      | `ales-krivec`      |
 | Yf Wu            | `yf-wu`            |
