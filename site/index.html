@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{HEADER}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            background-image: url("{{IMAGE}}.jpg");
+            background-color: #cccccc;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        h1 {
+            font-size: 38pt;
+        }
+        a {
+            color: #fff;
+        }
+        .content {
+            grid-area: content;
+        }
+        .header {
+            grid-area: header;
+        }
+        .footer {
+            grid-area: footer;
+        }
+        .wrapper {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-rows: 35% 50% 5%;
+            grid-template-areas:
+            "header"
+            "content"
+            "footer";
+            width: 100vw;
+            height: 100vh;
+            padding: 10px;
+        }
+        .box {
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="box header"></div>
+        <div class="box content">
+            <h1>
+                {{HEADER}}
+            </h1>
+            <p>
+                {{TEXT}}
+            </p>
+        </div>
+        <div class="box footer">
+            <p>
+                {{SOURCE}}
+            </p>
+        </div>
+  </div>
+</body>
+</html>
