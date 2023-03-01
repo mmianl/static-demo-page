@@ -1,4 +1,4 @@
-FROM nginx:1.22.1
+FROM nginx:1.23.3
 
 ENV HEADER=$HEADER
 ENV TEXT=$TEXT
