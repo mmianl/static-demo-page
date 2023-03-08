@@ -10,10 +10,13 @@ docker build -t mmianl/static-demo-page:nginx-1.23.3 .
 docker run --env HEADER=${HEADER} --env TEXT=${TEXT} --env IMAGE=${IMAGE} -p 8080:80 mmianl/static-demo-page:nginx-1.23.3
 ```
 
-## Available Paths
+## Available Paths (Port 80)
 * `/`
 * `/index.html`
 * `/status.json`
+
+## Available Paths (Port 8080)
+* `/stub_status`
 
 ## Available Background Images
 | Photographer     | Value for env var  |
@@ -48,7 +51,7 @@ spec:
         app: static-demo-page
     spec:
       containers:
-        - name: static-demo-page
+        - name: www
           image: mmianl/static-demo-page:nginx-1.23.3
           env:
             - name: HEADER
@@ -80,6 +83,20 @@ spec:
               cpu: "100m"
             limits:
               memory: "64Mi"
+        - name: nginx-exporter
+          image: nginx/nginx-prometheus-exporter:0.11.0
+          args:
+            - -nginx.scrape-uri=http://localhost:8080/stub_status
+          ports:
+            - name: http-metrics
+              containerPort: 9113
+              protocol: TCP
+          resources:
+            requests:
+              memory: 32Mi
+              cpu: 100m
+            limits:
+              memory: 32Mi
 ---
 apiVersion: v1
 kind: Service
@@ -95,9 +112,30 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 80
+    - name: http-metrics
+      port: 9113
+      protocol: TCP
+      targetPort: 9113
   selector:
     app: static-demo-page
   type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: static-demo-page
+  name: static-demo-page
+  namespace: default
+spec:
+  endpoints:
+    - port: http-metrics
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      app: static-demo-page
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
